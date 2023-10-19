@@ -1,10 +1,9 @@
 Music:
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Peaceful Jeremy Soule #1'
-        - Url: 'https://www.youtube.com/watch?v=cbqxazYJp_U'
-        - End: '3:50:38'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Peaceful Jeremy Soule #1'
+      Url: 'https://www.youtube.com/watch?v=cbqxazYJp_U'
+      End: '3:50:38'
+      Timestamps: |
             The Streets of Whiterun (Skyrim) 0:00:00
             Awake (Skyrim) 0:04:01
             From Past to Present (Skyrim) 0:05:33
@@ -60,12 +59,11 @@ Music:
             Darkened Depths (Morrowind) 3:05:58
             The Prophecy Fulfilled (Morrowind) 3:06:49
             Skyrim Atmospheres (Skyrim) 3:08:01
-    - Track: 
-        - Type: 'Compound'
-        - Title: 'Hotline Miami Soundtrack'
-        - Url: 'https://www.youtube.com/watch?v=oKD-MVfC9Ag'
-        - End: '1:31:33'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Hotline Miami Soundtrack'
+      Url: 'https://www.youtube.com/watch?v=oKD-MVfC9Ag'
+      End: '1:31:33'
+      Timestamps: |
             00:00    1. Sun Araw - Horse Steppin
             10:10    2. M O O N - Hydrogen
             14:59    3. M O O N - Paris
@@ -89,12 +87,11 @@ Music:
             1:25:21 21. Scattle - Its Safe Now
             1:28:05 22. Hotline Miami - Static (Bonus)
             1:30:03 23. Scattle - To The Top   (Bonus)
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Castlevania SOTN + Songs Saturn'
-        - Url: 'https://www.youtube.com/watch?v=eRmpU0RZOdU'
-        - End: '1:44:23'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Castlevania SOTN + Songs Saturn'
+      Url: 'https://www.youtube.com/watch?v=eRmpU0RZOdU'
+      End: '1:44:23'
+      Timestamps: |
             01. Metamorphosis 0:00
             02. Prologue 1:02
             03. Dance of Illusions 2:29
@@ -139,12 +136,11 @@ Music:
             42. Bloody Tears Hard Rock Version A [Saturn] 1:35:08
             43. Bloody Tears Hard Rock Version B [Saturn] 1:37:46
             44. Guardian [Saturn] 1:42:04
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Baba is You OST'
-        - Url: 'https://www.youtube.com/watch?v=dVyd_hAq6G4'
-        - End: '1:27:11'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Baba is You OST'
+      Url: 'https://www.youtube.com/watch?v=dVyd_hAq6G4'
+      End: '1:27:11'
+      Timestamps: |
             0:00:00 1. Baba is You
             0:03:45 2. on the island
             0:06:41 3. Wall is Stop ...for Starting Off
@@ -163,12 +159,11 @@ Music:
             1:09:47 16. Cursor is Select... for the Level Editor
             1:20:08 17. Keke is Party... for the Jamming
             1:24:44 18. Flag is Win... Ending Theme
-    - Track:
-        - Type: 'Compound'
-        - Title: 'TNT: Evilution - MUSIC COVER'
-        - Url: 'https://www.youtube.com/watch?v=He3F4CQFZVY'
-        - End: '37:42'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'TNT: Evilution - MUSIC COVER'
+      Url: 'https://www.youtube.com/watch?v=He3F4CQFZVY'
+      End: '37:42'
+      Timestamps: |
             00:00 - Ruined World
             00:19 - Sadistic
             04:31 - Smells Like Burning Corpse
@@ -184,12 +179,11 @@ Music:
             31:23 - Horizon
             33:11 - AimShootKill
             34:43 - Legion of the Lost
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Castlevania 3 Soundtrack Remastered'
-        - Url: 'https://www.youtube.com/watch?v=UwIQ3nBZ4Dw'
-        - End: '32:25'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Castlevania 3 Soundtrack Remastered'
+      Url: 'https://www.youtube.com/watch?v=UwIQ3nBZ4Dw'
+      End: '32:25'
+      Timestamps: |
             01. 00:00 Prelude
             02. 01:42 Epitaph
             03. 02:30 Prayer
@@ -218,12 +212,11 @@ Music:
             26. 30:43 Flashback
             27. 31:56 Ooooops!
             28. 32:00 Game Over
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Quake Champions: Doom Edition'
-        - Url: 'https://www.youtube.com/watch?v=ne6_AsTRZd4'
-        - End: '1:56:00'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Quake Champions: Doom Edition'
+      Url: 'https://www.youtube.com/watch?v=ne6_AsTRZd4'
+      End: '1:56:00'
+      Timestamps: |
             00:00 Slipgate
             02:16 Augmented
             05:37 Inferno
@@ -254,12 +247,11 @@ Music:
             01:40:56 Bull Rush
             01:45:33 Incendimus
             01:51:51 Punk's Not Dead
-    - Track:
-        - Type: 'Compound'
-        - Title: 'The Elder Scrolls II: Daggerfall OST'
-        - Url: 'https://www.youtube.com/watch?v=CqUCz7E1s90'
-        - End: '2:34:40'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'The Elder Scrolls II: Daggerfall OST'
+      Url: 'https://www.youtube.com/watch?v=CqUCz7E1s90'
+      End: '2:34:40'
+      Timestamps: |
             0:00:00 01 - Intro Cinematic
             0:02:01 02 - Day Theme 1 - A Beautiful Day in the City - 29
             0:03:07 03 - Day Theme 2 - Day
@@ -340,12 +332,11 @@ Music:
             2:30:51 78 - Website Midi Release Track 4 (Bonus) - DAG_10
             2:32:09 79 - Website Midi Release Track 5 (Bonus) - DAG_12
             2:33:48 80 - Music Test
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Mega Drive - 198XAD'
-        - Url: 'https://www.youtube.com/watch?v=l3NoYyNKSXQ'
-        - End: '1:09:44'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Mega Drive - 198XAD'
+      Url: 'https://www.youtube.com/watch?v=l3NoYyNKSXQ'
+      End: '1:09:44'
+      Timestamps: |
             1. Infiltrate 0:00
             2. Acid Spit 1:20
             3. NARC 6:02
@@ -360,12 +351,11 @@ Music:
             12. Slum Lord 47:45
             13. Zero Point Non-Response 52:45
             14. Only One 58:15
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Mega Drive - 199XAD'
-        - Url: 'https://www.youtube.com/watch?v=k40GsYoQgNo'
-        - End: '57:20'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Mega Drive - 199XAD'
+      Url: 'https://www.youtube.com/watch?v=k40GsYoQgNo'
+      End: '57:20'
+      Timestamps: |
             00:00  Operator
             02:12  Gun Hag
             06:55  NARC
@@ -378,12 +368,11 @@ Music:
             41:04  Terror Eyes
             46:16  Source Code
             51:10  Active Denial System
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Mega Drive - Seas Of Infinity'
-        - Url: 'https://www.youtube.com/watch?v=CrHRv11O9Cg'
-        - End: '53:41'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Mega Drive - Seas Of Infinity'
+      Url: 'https://www.youtube.com/watch?v=CrHRv11O9Cg'
+      End: '53:41'
+      Timestamps: |
             01. Seas Of Infinity 0:00
             02. Godspeed Us To The Stars 2:07
             03. Biohacker 6:43
@@ -395,12 +384,11 @@ Music:
             09. Cesaro Totality 32:23
             10. Visceral Grit ’92 33:22
             11. In Dreams 38:52
-    - Track:
-        - Type: 'Compound'
-        - Title: 'КОРОЛЬ И ШУТ'
-        - Url: 'https://www.youtube.com/watch?v=0-C0lCPFTj8'
-        - End: '2:53:11'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'КОРОЛЬ И ШУТ'
+      Url: 'https://www.youtube.com/watch?v=0-C0lCPFTj8'
+      End: '2:53:11'
+      Timestamps: |
             01. Лесник 00:00
             02. Прыгну со скалы 03:09
             03. Ели мясо мужики 06:21
@@ -451,12 +439,11 @@ Music:
             48. Дагон 02:40:20
             49. Двое против всех 02:45:24
             50. Фокусник 02:49:18
-    - Track:
-        - Type: 'Compound'
-        - Title: 'TheGreatKingKukuiYumeNikki'
-        - Url: 'file://TheGreatKingKukuiYumeNikki.opus'
-        - End: '3:00:58'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'TheGreatKingKukuiYumeNikki'
+      Url: 'file://TheGreatKingKukuiYumeNikki.opus'
+      End: '3:00:58'
+      Timestamps: |
             Nikki Title Screen 0:00
             Working Please Wait 2:27
             Dream Room 4:54
@@ -592,12 +579,11 @@ Music:
             Chimiko 02:58:08
             AP-Echonio 02:59:00
             Rain Indoors w Thunder 02:59:57
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Green neon Yume Nikki 2kki Sleep Mix'
-        - Url: 'https://youtu.be/4XPBqvUfHwo'
-        - End: '1:20:04'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Green neon Yume Nikki 2kki Sleep Mix'
+      Url: 'https://youtu.be/4XPBqvUfHwo'
+      End: '1:20:04'
+      Timestamps: |
             0:00 - Green Neon World - Yume 2kki
             1:53 - Forest Carnival - Yume 2kki
             3:21 - Forest Carnival (Lantern & Ladders) - Yume 2kki
@@ -658,12 +644,11 @@ Music:
             1:12:33 - Ending - Yume Nikki
             1:15:52 - Save Theme - Yume Nikki
             1:19:22 - White Desert - Yume Nikki
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Midnight 90 BPM Yume Nikki Fangames Sleep Mix Naked Flames'
-        - Url: 'https://www.youtube.com/watch?v=hnKpn7iPW6Y'
-        - End: '1:01:54'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Midnight 90 BPM Yume Nikki Fangames Sleep Mix Naked Flames'
+      Url: 'https://www.youtube.com/watch?v=hnKpn7iPW6Y'
+      End: '1:01:54'
+      Timestamps: |
             0:00 midnight_90BPM (Broken Bottles)
             2:30 drop (yume graffiti)
             4:06 green (yume graffiti)
@@ -692,12 +677,11 @@ Music:
             53:29 title theme (yuque)
             56:50 BGM003_Fror / Flooring world (.B.P.)
             01:00:51 loop3 (yume nyaki)
-    - Track:
-        - Type: 'Compound'
-        - Title: 'yume 2kki ost - sleep mix lavender hearts'
-        - Url: 'https://www.youtube.com/watch?v=ChaoIMuN_9g'
-        - End: '1:19:28'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'yume 2kki ost - sleep mix lavender hearts'
+      Url: 'https://www.youtube.com/watch?v=ChaoIMuN_9g'
+      End: '1:19:28'
+      Timestamps: |
             0:00 red sky cliff
             5:35 depths
             13:07 the ceiling (reversed)
@@ -711,12 +695,11 @@ Music:
             1:05:45 aquarium (overgrown city)
             1:08:04 blue forest
             1:11:35 antiquated resthouse
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Yume 2kki Dream Exploration'
-        - Url: 'https://www.youtube.com/watch?v=-gtQuKQVknk'
-        - End: '3:38:49'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Yume 2kki Dream Exploration'
+      Url: 'https://www.youtube.com/watch?v=-gtQuKQVknk'
+      End: '3:38:49'
+      Timestamps: |
             0:00 - Lotus Waters
             6:51 - The Ceiling (Reversed)
             12:06 - The Ceiling
@@ -804,12 +787,11 @@ Music:
             3:20:42 - Tomb of Velleties
             3:26:15 - Nocturnal Grove
             3:31:23 - Tomb of Velleties (Lunar Sanctuary)
-    - Track:
-        - Type: 'Compound'
-        - Title: 'Deus Ex 2000 Full OST'
-        - Url: 'https://www.youtube.com/watch?v=JhjkBE3d3Uw'
-        - End: '5:06:35'
-        - Timestamps: |
+    - Type: 'Compound'
+      Title: 'Deus Ex 2000 Full OST'
+      Url: 'https://www.youtube.com/watch?v=JhjkBE3d3Uw'
+      End: '5:06:35'
+      Timestamps: |
             0:00 Main Title
             2:25 Intro Sequence
             4:43 Training Room
