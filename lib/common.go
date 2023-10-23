@@ -1,6 +1,13 @@
 package lib
 
-type music struct {
+import (
+	"io"
+	"os"
+
+	"gopkg.in/yaml.v3"
+)
+
+type Music struct {
 	Tracks []track `yaml:"Music"`
 }
 
@@ -14,22 +21,21 @@ type track struct {
 
 type command []string
 
-func downloader_cmd(out_path string, url string) []string {
-	return []string{
-		YT_DOWNLOADER,
-		"-x",
-		"-o", out_path,
-		url,
+func LoadMusic(path string) (*Music, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
 	}
-}
+	defer file.Close()
+	contents, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
 
-func convert_cmd(in string, from string, to string, out string) []string {
-	return []string{
-		FFMPEG,
-		"-i", in,
-		"-ss", from,
-		"-to", to,
-		"-c", "copy",
-		out,
+	var music Music
+	err = yaml.Unmarshal(contents, &music)
+	if err != nil {
+		return nil, err
 	}
+	return &music, nil
 }

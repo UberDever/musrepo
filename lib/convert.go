@@ -7,8 +7,29 @@ import (
 	"strings"
 )
 
-func Convert(m music, in_dir string, out_dir string) ([]command, error) {
-	commands := make([]command, 0, 8)
+type convert_cmd struct {
+	In  string
+	Out string
+	Cmd []string
+}
+
+func convert_command(in string, from string, to string, out string) convert_cmd {
+	return convert_cmd{
+		In:  in,
+		Out: out,
+		Cmd: []string{
+			FFMPEG,
+			"-i", in,
+			"-ss", from,
+			"-to", to,
+			"-c", "copy",
+			out,
+		},
+	}
+}
+
+func Convert(m Music, in_dir string, out_dir string) ([]convert_cmd, error) {
+	commands := make([]convert_cmd, 0, 8)
 	for _, track := range m.Tracks {
 		track_parts, err := convert_timestamps(track.Timestamps, track.End)
 		if err != nil {
@@ -18,7 +39,7 @@ func Convert(m music, in_dir string, out_dir string) ([]command, error) {
 		for _, part := range track_parts {
 			in := path.Join(in_dir, track.Title) + OUT_EXT
 			out := path.Join(out_dir, part.name) + OUT_EXT
-			cmd := convert_cmd(in, part.start, part.end, out)
+			cmd := convert_command(in, part.start, part.end, out)
 			commands = append(commands, cmd)
 		}
 	}
@@ -42,13 +63,13 @@ func convert_timestamps(timestamps string, end string) ([]track_part, error) {
 	starts := []string{}
 	ends := []string{}
 
-	lines := strings.Split(strings.TrimSpace(timestamps), " ")
+	lines := strings.Split(strings.TrimSpace(timestamps), "\n")
 	for index, line := range lines {
 		parts := strings.Split(strings.TrimSpace(line), " ")
 		var time_part *string = nil
 		for _, part := range parts {
 			if looks_like_time(part) {
-				*time_part = part
+				time_part = &part
 				break
 			}
 		}
