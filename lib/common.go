@@ -1,8 +1,10 @@
 package lib
 
 import (
+	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -12,6 +14,7 @@ type Music struct {
 }
 
 type track struct {
+	id         int
 	Type       string `yaml:"Type"`
 	Title      string `yaml:"Title"`
 	Url        string `yaml:"Url"`
@@ -19,7 +22,20 @@ type track struct {
 	Timestamps string `yaml:"Timestamps"`
 }
 
-type command []string
+type MusRepo struct {
+	music *Music
+}
+
+func NewMusRepo(m *Music) MusRepo {
+	return MusRepo{
+		music: m,
+	}
+}
+
+type Command interface {
+	TrackId() int
+	Cmd() []string
+}
 
 func LoadMusic(path string) (*Music, error) {
 	file, err := os.Open(path)
@@ -37,5 +53,13 @@ func LoadMusic(path string) (*Music, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	for i := range music.Tracks {
+		music.Tracks[i].id = i
+	}
 	return &music, nil
+}
+
+func FormatCommand(c Command) string {
+	return fmt.Sprintf("%d: ", c.TrackId()) + "'" + strings.Join(c.Cmd(), "', '") + "'"
 }

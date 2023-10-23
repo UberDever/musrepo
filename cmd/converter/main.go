@@ -6,7 +6,6 @@ import (
 	"log/slog"
 	"musrepo/lib"
 	"os"
-	"strings"
 
 	"github.com/akamensky/argparse"
 )
@@ -52,11 +51,16 @@ func main() {
 		os.Exit(-1)
 	}
 
-	commands, err := lib.Convert(*music, *full_path, *out_path)
+	musrepo := lib.NewMusRepo(music)
+	commands, err := musrepo.Convert(*full_path, *out_path)
+	if err != nil {
+		slog.Error(err.Error())
+		os.Exit(-1)
+	}
 
 	if *dry_run {
 		for _, c := range commands {
-			fmt.Println("\"" + strings.Join(c.Cmd, "\", \"") + "\"")
+			fmt.Println(lib.FormatCommand(c))
 		}
 		os.Exit(0)
 	}

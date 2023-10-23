@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"musrepo/lib"
 	"os"
-	"strings"
 
 	"log/slog"
 
@@ -41,14 +40,20 @@ func main() {
 
 	music, err := lib.LoadMusic(*music_path)
 	if err != nil {
-		slog.Default().Error(err.Error())
+		slog.Error(err.Error())
+		os.Exit(-1)
 	}
 
-	commands, err := lib.Download(*music, *out_path)
+	musrepo := lib.NewMusRepo(music)
+	commands, err := musrepo.Download(*out_path)
+	if err != nil {
+		slog.Error(err.Error())
+		os.Exit(-1)
+	}
 
 	if *dry_run {
 		for _, c := range commands {
-			fmt.Println("\"" + strings.Join(c, "\", \"") + "\"")
+			fmt.Println(lib.FormatCommand(c))
 		}
 		os.Exit(0)
 	}

@@ -8,16 +8,21 @@ import (
 )
 
 type convert_cmd struct {
+	id  int
 	In  string
 	Out string
-	Cmd []string
+	cmd []string
 }
 
-func convert_command(in string, from string, to string, out string) convert_cmd {
+func (c convert_cmd) TrackId() int  { return c.id }
+func (c convert_cmd) Cmd() []string { return c.cmd }
+
+func (c *MusRepo) convert_command(track_id int, in string, from string, to string, out string) convert_cmd {
 	return convert_cmd{
+		id:  track_id,
 		In:  in,
 		Out: out,
-		Cmd: []string{
+		cmd: []string{
 			FFMPEG,
 			"-i", in,
 			"-ss", from,
@@ -28,9 +33,9 @@ func convert_command(in string, from string, to string, out string) convert_cmd 
 	}
 }
 
-func Convert(m Music, in_dir string, out_dir string) ([]convert_cmd, error) {
+func (c *MusRepo) Convert(in_dir string, out_dir string) ([]convert_cmd, error) {
 	commands := make([]convert_cmd, 0, 8)
-	for _, track := range m.Tracks {
+	for _, track := range c.music.Tracks {
 		track_parts, err := convert_timestamps(track.Timestamps, track.End)
 		if err != nil {
 			return nil, err
@@ -39,7 +44,7 @@ func Convert(m Music, in_dir string, out_dir string) ([]convert_cmd, error) {
 		for _, part := range track_parts {
 			in := path.Join(in_dir, track.Title) + OUT_EXT
 			out := path.Join(out_dir, part.name) + OUT_EXT
-			cmd := convert_command(in, part.start, part.end, out)
+			cmd := c.convert_command(track.id, in, part.start, part.end, out)
 			commands = append(commands, cmd)
 		}
 	}
