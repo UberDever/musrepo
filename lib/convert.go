@@ -9,21 +9,27 @@ import (
 
 type convert_cmd struct {
 	id  int
-	In  string
-	Out string
+	in  string
+	out string
 	cmd []string
 }
 
+func (c convert_cmd) Dump() string {
+	return fmt.Sprintf("%s '%s' -> '%s'", CONVERTER, c.in, c.out)
+}
+
 func (c convert_cmd) TrackId() int  { return c.id }
+func (c convert_cmd) In() string    { return c.in }
+func (c convert_cmd) Out() string   { return c.out }
 func (c convert_cmd) Cmd() []string { return c.cmd }
 
 func (c *MusRepo) convert_command(track_id int, in string, from string, to string, out string) convert_cmd {
 	return convert_cmd{
 		id:  track_id,
-		In:  in,
-		Out: out,
+		in:  in,
+		out: out,
 		cmd: []string{
-			FFMPEG,
+			CONVERTER,
 			"-i", in,
 			"-ss", from,
 			"-to", to,
@@ -42,8 +48,9 @@ func (c *MusRepo) Convert(in_dir string, out_dir string) ([]convert_cmd, error) 
 		}
 
 		for _, part := range track_parts {
-			in := path.Join(in_dir, track.Title) + OUT_EXT
-			out := path.Join(out_dir, part.name) + OUT_EXT
+			title := PathFriendly(track.Title)
+			in := path.Join(in_dir, title) + OUT_EXT
+			out := path.Join(out_dir, title, PathFriendly(part.name)) + OUT_EXT
 			cmd := c.convert_command(track.id, in, part.start, part.end, out)
 			commands = append(commands, cmd)
 		}
@@ -63,7 +70,6 @@ func convert_timestamps(timestamps string, end string) ([]track_part, error) {
 		return time_regex.MatchString(s)
 	}
 
-	forbiddens := []string{"."}
 	names := []string{}
 	starts := []string{}
 	ends := []string{}
@@ -71,33 +77,22 @@ func convert_timestamps(timestamps string, end string) ([]track_part, error) {
 	lines := strings.Split(strings.TrimSpace(timestamps), "\n")
 	for index, line := range lines {
 		parts := strings.Split(strings.TrimSpace(line), " ")
-		var time_part *string = nil
-		for _, part := range parts {
+		time_part := -1
+		for i, part := range parts {
 			if looks_like_time(part) {
-				time_part = &part
+				time_part = i
 				break
 			}
 		}
-		if time_part == nil {
+		if time_part == -1 {
 			return nil, fmt.Errorf("no time found in track part: %s", line)
 		}
 
-		forbiddens = append(forbiddens, *time_part)
-		legal_parts := make([]string, 0, len(parts))
-		for _, forbidden := range forbiddens {
-			for _, part := range parts {
-				if !strings.Contains(part, forbidden) {
-					legal_parts = append(legal_parts, part)
-				}
-			}
-		}
-		if len(legal_parts) == 0 {
-			return nil, fmt.Errorf("no legal parts are found in parts: %v", parts)
-		}
-
-		n := fmt.Sprintf("%3d", index)
+		time := parts[time_part]
+		parts = append(parts[:time_part], parts[time_part+1:]...)
+		n := fmt.Sprintf("%03d", index)
 		names = append(names, n+" "+strings.Join(parts, " "))
-		starts = append(starts, *time_part)
+		starts = append(starts, time)
 	}
 	ends = append(ends, starts[1:]...)
 	ends = append(ends, end)

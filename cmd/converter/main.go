@@ -65,14 +65,14 @@ func main() {
 		os.Exit(0)
 	}
 
-	if _, err := os.Stat(*out_path); errors.Is(err, os.ErrNotExist) {
-		slog.Info(fmt.Sprintf("Creating directory '%s'", *out_path))
-		os.MkdirAll(*out_path, os.ModePerm)
+	for _, cmd := range commands {
+		lib.CreateOutDirs(cmd)
 	}
+
 	for _, c := range commands {
-		if _, err := os.Stat(c.In); errors.Is(err, os.ErrNotExist) {
+		if _, err := os.Stat(c.In()); errors.Is(err, os.ErrNotExist) {
 			if *skip_missing {
-				slog.Info(fmt.Sprintf("Skipping missing '%s' for '%s'", c.In, c.Out))
+				slog.Info(fmt.Sprintf("Skipping missing '%s' for '%s'", c.In(), c.Out()))
 				continue
 			} else {
 				slog.Error(err.Error())

@@ -1,24 +1,34 @@
 package lib
 
-import "net/url"
+import (
+	"fmt"
+	"net/url"
+	"path"
+)
 
 type downloader_cmd struct {
 	id  int
-	Out string
+	out string
 	cmd []string
 }
 
+func (c downloader_cmd) Dump() string {
+	return fmt.Sprintf("%s '%s'", YT_DOWNLOADER, c.out)
+}
+
 func (c downloader_cmd) TrackId() int  { return c.id }
+func (c downloader_cmd) In() string    { return "" }
+func (c downloader_cmd) Out() string   { return c.out }
 func (c downloader_cmd) Cmd() []string { return c.cmd }
 
-func (c *MusRepo) downloader_command(track_id int, out_path string, url string) downloader_cmd {
+func (c *MusRepo) downloader_command(track_id int, out string, url string) downloader_cmd {
 	return downloader_cmd{
 		id:  track_id,
-		Out: out_path,
+		out: out,
 		cmd: []string{
 			YT_DOWNLOADER,
 			"-x",
-			"-o", out_path,
+			"-o", out,
 			url,
 		},
 	}
@@ -35,7 +45,9 @@ func (c *MusRepo) Download(out_path string) ([]Command, error) {
 			continue
 		}
 
-		commands = append(commands, c.downloader_command(track.id, out_path, link.String()))
+		title := PathFriendly(track.Title)
+		out := path.Join(out_path, title)
+		commands = append(commands, c.downloader_command(track.id, out, link.String()))
 	}
 	return commands, nil
 }

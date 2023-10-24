@@ -1,8 +1,8 @@
 package lib
 
 const (
-	FFMPEG        = "ffmpeg"
-	YT_DOWNLOADER = "yt-dlp"
+	CONVERTER     = "ffmpeg"
+	YT_DOWNLOADER = "./yt-dlp"
 	USAGE         = `
     Tool that uses provided list of tracks (currently in YAML format) and does the following:
 

@@ -1,12 +1,10 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log/slog"
 	"musrepo/lib"
 	"os"
-	"os/exec"
 	"sync/atomic"
 
 	"github.com/akamensky/argparse"
@@ -51,7 +49,7 @@ func main() {
 	}
 
 	musrepo := lib.NewMusRepo(music)
-	download_commands, err := musrepo.Download(*out_path)
+	download_commands, err := musrepo.Download(*full_path)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(-1)
@@ -73,58 +71,57 @@ func main() {
 		os.Exit(0)
 	}
 
-	if _, err := os.Stat(*out_path); errors.Is(err, os.ErrNotExist) {
-		slog.Info(fmt.Sprintf("Creating directory '%s'", *out_path))
-		os.MkdirAll(*out_path, os.ModePerm)
+	for _, cmd := range download_commands {
+		lib.CreateOutDirs(cmd)
+	}
+	for _, cmd := range convert_commands {
+		lib.CreateOutDirs(cmd)
 	}
 
-	errors := make(chan error)
-	downloaded_ids := make(chan int)
-	converted_ids := make(chan int)
-
-	exec_command := func(c lib.Command) error {
-		command := c.Cmd()
-		cmd := exec.Command(command[0], command[1:]...)
-		err := cmd.Start()
-		if err != nil {
-			return err
-		}
-		err = cmd.Wait()
-		if err != nil {
-			return err
-		}
-		return nil
+	type result struct {
+		message  string
+		is_error bool
 	}
+	results := make(chan result)
 
 	var downloaded_count atomic.Int64
-	download := func(c lib.Command) {
+	jobs_count := int64(len(download_commands))
+	download := func(load_cmd lib.Command) {
 		defer func() {
 			downloaded_count.Add(1)
-			if downloaded_count.Load() == int64(len(download_commands)) {
-				close(downloaded_ids)
+			if downloaded_count.Load() >= jobs_count {
+				close(results)
 			}
 		}()
-		if err := exec_command(c); err != nil {
-			errors <- err
-			downloaded_count.Add(1)
+		if err := lib.ExecCommand(load_cmd); err != nil {
+			results <- result{
+				message:  err.Error(),
+				is_error: true,
+			}
 			return
 		}
-		downloaded_ids <- c.TrackId()
-	}
+		results <- result{
+			message:  fmt.Sprintf("Downloaded %s", load_cmd.Dump()),
+			is_error: false,
+		}
 
-	var converted_count atomic.Int64
-	convert := func(c lib.Command) {
-		defer func() {
-			converted_count.Add(1)
-			if converted_count.Load() == int64(len(convert_commands)) {
-				close(converted_ids)
+		for _, cmd := range convert_commands {
+			if cmd.TrackId() == load_cmd.TrackId() {
+				go func() {
+					if err := lib.ExecCommand(load_cmd); err != nil {
+						results <- result{
+							message:  err.Error(),
+							is_error: true,
+						}
+						return
+					}
+					results <- result{
+						message:  fmt.Sprintf("Converted %s", cmd.Dump()),
+						is_error: false,
+					}
+				}()
 			}
-		}()
-		if err := exec_command(c); err != nil {
-			errors <- err
-			return
 		}
-		converted_ids <- c.TrackId()
 	}
 
 	for _, cmd := range download_commands {
@@ -132,32 +129,16 @@ func main() {
 	}
 
 	for {
-		err, more := <-errors
+		res, more := <-results
 		if !more {
 			break
 		}
-		slog.Error(err.Error())
-	}
-
-	for {
-		loaded, more := <-downloaded_ids
-		if !more {
-			break
+		if res.is_error {
+			slog.Error(res.message)
+		} else {
+			slog.Info(res.message)
 		}
-		slog.Info(fmt.Sprintf("Downloaded track %d", loaded))
-		for _, cmd := range convert_commands {
-			if cmd.TrackId() == loaded {
-				go convert(cmd)
-			}
-		}
-	}
-
-	for {
-		converted, more := <-converted_ids
-		if !more {
-			break
-		}
-		slog.Info(fmt.Sprintf("Converted track from %d", converted))
+		fmt.Println()
 	}
 
 }
