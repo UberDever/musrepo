@@ -1,11 +1,12 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 	"musrepo/lib"
 	"os"
-	"sync/atomic"
+	"sync"
 
 	"github.com/akamensky/argparse"
 )
@@ -38,7 +39,14 @@ func main() {
 	}
 
 	if *verbose {
-		handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug})
+		ReplaceAttr := func(group []string, a slog.Attr) slog.Attr {
+			if a.Key == "time" || a.Key == "level" {
+				return slog.Attr{}
+			}
+			return slog.Attr{Key: a.Key, Value: a.Value}
+		}
+
+		handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug, ReplaceAttr: ReplaceAttr})
 		slog.SetDefault(slog.New(handler))
 	}
 
@@ -78,67 +86,85 @@ func main() {
 		lib.CreateOutDirs(cmd)
 	}
 
+	grouped_convert_cmd := make(map[int][]lib.Command)
+	for _, cmd := range convert_commands {
+		grouped_convert_cmd[cmd.TrackId()] = append(grouped_convert_cmd[cmd.TrackId()], cmd)
+	}
+
 	type result struct {
 		message  string
 		is_error bool
 	}
 	results := make(chan result)
 
-	var downloaded_count atomic.Int64
-	jobs_count := int64(len(download_commands))
-	download := func(load_cmd lib.Command) {
-		defer func() {
-			downloaded_count.Add(1)
-			if downloaded_count.Load() >= jobs_count {
-				close(results)
-			}
-		}()
-		if err := lib.ExecCommand(load_cmd); err != nil {
+	exec_cmd := func(cmd lib.Command) {
+		var err error
+		var std_out []byte
+		if err, std_out = lib.ExecCommand(cmd); err != nil {
 			results <- result{
 				message:  err.Error(),
 				is_error: true,
 			}
 			return
 		}
+		var out string
+		if len(std_out) == 0 {
+			out = "Successfully converted " + cmd.Dump()
+		} else {
+			out = string(std_out)
+		}
 		results <- result{
-			message:  fmt.Sprintf("Downloaded %s", load_cmd.Dump()),
+			message:  out,
 			is_error: false,
 		}
+	}
 
-		for _, cmd := range convert_commands {
-			if cmd.TrackId() == load_cmd.TrackId() {
-				go func() {
-					if err := lib.ExecCommand(load_cmd); err != nil {
-						results <- result{
-							message:  err.Error(),
-							is_error: true,
-						}
-						return
-					}
-					results <- result{
-						message:  fmt.Sprintf("Converted %s", cmd.Dump()),
-						is_error: false,
-					}
-				}()
+	var wg sync.WaitGroup
+	convert_cmd := func(cmd lib.Command) {
+		defer wg.Done()
+
+		if _, err := os.Stat(cmd.Out()); errors.Is(err, os.ErrNotExist) {
+			exec_cmd(cmd)
+		} else {
+			results <- result{
+				message:  fmt.Sprintf("Skipping %s -> already exist", cmd.Dump()),
+				is_error: false,
 			}
 		}
 	}
 
-	for _, cmd := range download_commands {
-		go download(cmd)
+	download_cmd := func(cmd lib.Command) {
+		// exec_cmd(cmd)
+
+		to_convert := grouped_convert_cmd[cmd.TrackId()]
+		for _, c := range to_convert {
+			wg.Add(1)
+			slog.Debug("Launch", "cmd", c.Cmd())
+			go convert_cmd(c)
+		}
+		wg.Wait()
+
+		fmt.Println("Wrapping up...")
+		close(results)
+		fmt.Println("Completed download")
 	}
 
-	for {
-		res, more := <-results
-		if !more {
-			break
+	for _, cmd := range download_commands {
+		fmt.Printf("Launching %s\n", cmd.Dump())
+		download_cmd(cmd)
+
+		for {
+			res, more := <-results
+			if !more {
+				break
+			}
+			if res.is_error {
+				fmt.Fprintln(os.Stderr, res.message)
+			} else {
+				fmt.Println(res.message)
+			}
 		}
-		if res.is_error {
-			slog.Error(res.message)
-		} else {
-			slog.Info(res.message)
-		}
-		fmt.Println()
+		break
 	}
 
 }

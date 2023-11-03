@@ -28,6 +28,7 @@ func (c *MusRepo) downloader_command(track_id int, out string, url string) downl
 		cmd: []string{
 			YT_DOWNLOADER,
 			"-x",
+			"--no-progress",
 			"-o", out,
 			url,
 		},

@@ -45,20 +45,22 @@ type Command interface {
 	Cmd() []string
 }
 
-func ExecCommand(c Command) error {
+func ExecCommand(c Command) (error, []byte) {
 	command := c.Cmd()
 	cmd := exec.Command(command[0], command[1:]...)
+	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
 	err := cmd.Start()
 	if err != nil {
-		return err
+		return err, nil
 	}
+	std_out, _ := io.ReadAll(stdout)
 	err_out, _ := io.ReadAll(stderr)
 	err = cmd.Wait()
 	if err != nil {
-		return fmt.Errorf("failed: %s\n%s", c.Dump(), err_out)
+		return fmt.Errorf("failed: %s\n%s", c.Dump(), err_out), nil
 	}
-	return nil
+	return nil, std_out
 }
 
 func FormatCommand(c Command) string {

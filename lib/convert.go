@@ -30,6 +30,8 @@ func (c *MusRepo) convert_command(track_id int, in string, from string, to strin
 		out: out,
 		cmd: []string{
 			CONVERTER,
+			"-hide_banner",
+			"-loglevel", "error",
 			"-i", in,
 			"-ss", from,
 			"-to", to,
@@ -76,7 +78,7 @@ func convert_timestamps(timestamps string, end string) ([]track_part, error) {
 
 	lines := strings.Split(strings.TrimSpace(timestamps), "\n")
 	for index, line := range lines {
-		parts := strings.Split(strings.TrimSpace(line), " ")
+		parts := strings.Fields(strings.TrimSpace(line))
 		time_part := -1
 		for i, part := range parts {
 			if looks_like_time(part) {
@@ -90,8 +92,8 @@ func convert_timestamps(timestamps string, end string) ([]track_part, error) {
 
 		time := parts[time_part]
 		parts = append(parts[:time_part], parts[time_part+1:]...)
-		n := fmt.Sprintf("%03d", index)
-		names = append(names, n+" "+strings.Join(parts, " "))
+		entry := fmt.Sprintf("%03d %s", index, strings.Join(parts, " "))
+		names = append(names, entry)
 		starts = append(starts, time)
 	}
 	ends = append(ends, starts[1:]...)
