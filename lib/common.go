@@ -89,6 +89,22 @@ func LoadMusic(path string) (*Music, error) {
 	}
 	return &music, nil
 }
+func SetupLogHandlers(verbose bool) {
+	ReplaceAttr := func(group []string, a slog.Attr) slog.Attr {
+		if a.Key == "time" || a.Key == "level" {
+			return slog.Attr{}
+		}
+		return slog.Attr{Key: a.Key, Value: a.Value}
+	}
+
+	handler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo, ReplaceAttr: ReplaceAttr})
+	slog.SetDefault(slog.New(handler))
+
+	if verbose {
+		handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug, ReplaceAttr: ReplaceAttr})
+		slog.SetDefault(slog.New(handler))
+	}
+}
 
 func CreateOutDirs(cmd Command) {
 	dirname := path.Dir(cmd.Out())

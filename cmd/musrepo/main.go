@@ -38,17 +38,7 @@ func main() {
 		os.Exit(-1)
 	}
 
-	if *verbose {
-		ReplaceAttr := func(group []string, a slog.Attr) slog.Attr {
-			if a.Key == "time" || a.Key == "level" {
-				return slog.Attr{}
-			}
-			return slog.Attr{Key: a.Key, Value: a.Value}
-		}
-
-		handler := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug, ReplaceAttr: ReplaceAttr})
-		slog.SetDefault(slog.New(handler))
-	}
+	lib.SetupLogHandlers(*verbose)
 
 	music, err := lib.LoadMusic(*music_path)
 	if err != nil {
@@ -91,11 +81,27 @@ func main() {
 		grouped_convert_cmd[cmd.TrackId()] = append(grouped_convert_cmd[cmd.TrackId()], cmd)
 	}
 
+	max_results := func() int { // this is fucking ridiculous, but here we are
+		stupid := func(x, y int) int {
+			if x > y {
+				return x
+			}
+			return y
+		}
+		max_results := -1
+		for _, commands := range grouped_convert_cmd {
+			max_results = stupid(max_results, len(commands))
+		}
+		return max_results
+	}
+
 	type result struct {
 		message  string
 		is_error bool
 	}
-	results := make(chan result)
+	results_size := max_results()
+	results := make(chan result, results_size)
+	slog.Debug("Max channel size", results_size)
 
 	exec_cmd := func(cmd lib.Command) {
 		var err error
@@ -119,10 +125,8 @@ func main() {
 		}
 	}
 
-	var wg sync.WaitGroup
-	convert_cmd := func(cmd lib.Command) {
+	convert_cmd := func(cmd lib.Command, wg *sync.WaitGroup) {
 		defer wg.Done()
-
 		if _, err := os.Stat(cmd.Out()); errors.Is(err, os.ErrNotExist) {
 			exec_cmd(cmd)
 		} else {
@@ -134,37 +138,39 @@ func main() {
 	}
 
 	download_cmd := func(cmd lib.Command) {
-		// exec_cmd(cmd)
+		if _, err := os.Stat(cmd.Out()); errors.Is(err, os.ErrNotExist) {
+			exec_cmd(cmd)
+		} else {
+			slog.Info(fmt.Sprintf("Skipping %s -> already exist", cmd.Dump()))
+		}
 
 		to_convert := grouped_convert_cmd[cmd.TrackId()]
+		var wg sync.WaitGroup
 		for _, c := range to_convert {
+			slog.Debug("Launching", "cmd", c.Dump())
 			wg.Add(1)
-			slog.Debug("Launch", "cmd", c.Cmd())
-			go convert_cmd(c)
+			go convert_cmd(c, &wg)
 		}
 		wg.Wait()
-
-		fmt.Println("Wrapping up...")
-		close(results)
-		fmt.Println("Completed download")
 	}
 
-	for _, cmd := range download_commands {
-		fmt.Printf("Launching %s\n", cmd.Dump())
-		download_cmd(cmd)
-
-		for {
-			res, more := <-results
-			if !more {
-				break
-			}
+	go func() {
+		for res := range results {
 			if res.is_error {
-				fmt.Fprintln(os.Stderr, res.message)
+				slog.Error(res.message)
 			} else {
-				fmt.Println(res.message)
+				slog.Info(res.message)
 			}
 		}
-		break
+	}()
+
+	for _, cmd := range download_commands {
+		slog.Info("Launching", "cmd", cmd.Dump())
+		download_cmd(cmd)
 	}
+
+	slog.Info("Wrapping up...")
+	close(results)
+	slog.Info("Work is done")
 
 }

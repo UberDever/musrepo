@@ -24,7 +24,7 @@ func (c downloader_cmd) Cmd() []string { return c.cmd }
 func (c *MusRepo) downloader_command(track_id int, out string, url string) downloader_cmd {
 	return downloader_cmd{
 		id:  track_id,
-		out: out,
+		out: out + OUT_EXT,
 		cmd: []string{
 			YT_DOWNLOADER,
 			"-x",
