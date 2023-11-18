@@ -928,10 +928,88 @@ Music:
             4:52:32 Siren Synapse [Alexander Brandon & Jimmy Hinson]
             4:56:56 Endless Night [Technomancer]
             5:01:45 Ma Chérie Nicolette [Alexander Brandon & Jimmy Hinson]
+    - Type: 'Compound'
+      Title: 'Mega Drive - 200XAD'
+      Url: 'https://www.youtube.com/watch?v=Y8T-XV7tjBc'
+      End: '1:12:36'
+      Timestamps: |
+            00:00 - Mega Drive - Orion
+            01:15 - Mega Drive - Mnemonic Head Trip
+            06:08 - Mega Drive - NARC³
+            11:16 - Mega Drive - Persona Sync
+            16:51 - Mega Drive - Shadow Dancer
+            21:19 - Mega Drive - Multipass
+            25:38 - Mega Drive - Black Katana
+            30:19 - Mega Drive - Infrared Icon
+            34:38 - Mega Drive - Arc Ascension
+            39:30 - Mega Drive - Threat Signal Loss
+            45:02 - Mega Drive - Code Walker
+            49:28 - Mega Drive - Ctrl Alt Dissonance
+            54:01 - Mega Drive - METACURSE
+            58:09 - Mega Drive - Nakatomi Night Assault
+            1:03:34 - Mega Drive - Memoria
+    - Type: 'Compound'
+      Title: 'Mega Drive - Neuroframe'
+      Url: 'https://www.youtube.com/watch?v=0XcB8ePUXVM'
+      End: '1:04:57'
+      Timestamps: |
+            01 - Extraction 00:00
+            02 - Wire Rot 02:32
+            03 - Outer Recall 07:05
+            04 - Silencer 11:37
+            05 - Loaded 17:00
+            06 - Modifier 21:55
+            07 - Digital Veils 26:59
+            08 - Informant 31:54
+            09 - Dot Site Hack 37:53
+            10 - Corruptor 42:29
+            11 - Gutter Punk 47:27
+            12 - Primer 51:52
+            13 - Optical Ghost Patterns 56:49
+            14 - Neuroframe 01:00:39
+    - Type: 'Compound'
+      Title: 'Carpenter Brut - Trilogy'
+      Url:  'https://www.youtube.com/watch?v=DY1s9SmrQRE'
+      End: '1:21:18'
+      Timestamps: |
+            1. Escape from Midwich Valley : 00:00
+            2. Disco Zombi Italia : 06:44
+            3. L.A. Venice Bitch 80's : 12:01
+            4. Wake Up the President : 16:13
+            5. 347 Midnight Demons : 20:29
+            6. Le Perv : 24:43
+            7. Roller Mobster : 28:59
+            8. Meet Matt Stryker : 32:33
+            9. Obituary : 36:39
+            10. Looking for Tracy Tzu : 41:06
+            11. Sexkiller on the Loose : 45:24
+            12. Hang'em All : 49:07
+            13. Division Ruine : 54:44
+            14. Paradise Warfare : 58:19
+            15. Run, Sally, Run! : 01:02:34
+            16. Turbo Killer : 01:07:22
+            17. Anarchy Road : 01:10:51
+            18. Invasion A.D. : 01:14:24
+    - Type: 'Compound'
+      Title: 'Mega Drive - The Grid'
+      Url: 'https://www.youtube.com/watch?v=-DGnjdlrgnA'
+      End: '54:31'
+      Timestamps: |
+            Emergence: 0:00
+            Omnicore: 1:33
+            Time and Trigger: 6:27
+            Integral Crisis: 11:23
+            Escape Route: 15:51
+            Loveless (6.25 - 6.00hr): 21:28
+            Night Ascent: 25:39
+            Sector of 7: 32:00
+            Flashback: 37:46
+            Systems Online: 43:48
+            The Glowing of Gunner All: 46:18
+            Ex Inferis: 51:13
 
-#    - Track:
-#        - Type: 'Compound'
-#        - Title: 
-#        - Url: 
-#        - End: 
-#        - Timestamps: |
+# - Type: 'Compound'
+#   Title:
+#   Url: 
+#   End: 
+#   Timestamps: |
